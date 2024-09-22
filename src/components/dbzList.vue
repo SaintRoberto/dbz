@@ -4,24 +4,61 @@
     <div class="logo">
       <img src="https://i.pinimg.com/originals/44/ae/09/44ae092a4e174756de8d950236b6e7e6.png" class="img-logo">
     </div>
-    <ul class="main-content">
-      <li v-for="item in dbzs.items" :key="item.name" class="item">
-        <dbzCard :name="item.name" :idChar="item.id" :race="item.race" :image="item.image" />
+    <div class="container-search">
+      <input v-model="searchChar" class="search" placeholder="Search character" />
+    </div>
+    <div v-if="dbzSearch && searchChar != ''" class="main-content">
+      <li v-for="itemdbz in dbzSearch" :key="itemdbz.name" class="item">
+        <dbzCard :name="itemdbz.name" :idChar="itemdbz.id" :race="itemdbz.race" :image="itemdbz.image" />
       </li>
-    </ul>
+    </div>
+    <div v-else>
+      <ul class="main-content">
+        <li v-for="item in dbzs.items" :key="item.name" class="item">
+          <dbzCard :name="item.name" :idChar="item.id" :race="item.race" :image="item.image" />
+        </li>
+      </ul>
+    </div>
   </div>
-
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import dbzCard from './dbzCard.vue';
+import axios from 'axios';
 
 const dbzs = ref([]);
+const searchChar = ref('');
+const dbzSearch = ref();
+
 const getDbzs = async () => {
-  const result = await fetch('https://dragonball-api.com/api/characters');
-  dbzs.value = await result.json();
+  try {
+    const result = await fetch('https://dragonball-api.com/api/characters');
+    dbzs.value = await result.json();
+  }
+  catch(error) {
+    console.error('no hay data' .error);
+    dbzSearch.value = [];
+
+  }
+
 }
+
+watch(searchChar, async (newValue) => {
+  try {
+    const response = await axios.get(`https://dragonball-api.com/api/characters?name=${newValue}`)
+    if (response.data && response.data.length > 0) {
+      dbzSearch.value = response.data;
+    } else {
+      dbzSearch.value = [];
+    }    
+    console.log(dbzSearch.value);
+  }
+  catch(error) {
+    console.error('no hay data' . error);
+  }
+})
+
 
 onMounted(() => {
   getDbzs();
@@ -34,8 +71,19 @@ onMounted(() => {
   display: grid;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   width: 100%;
+}
+
+.container-search {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  max-height: 10vh;
+  width: 100%;
+}
+
+.search {
+  width: 500px;
 }
 
 .logo {

@@ -3,8 +3,7 @@
         <div class="character-header">
             <div class="slider-container">
                 <div class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
-                    <div v-for="(transformation, index) in charImages" :key="transformation.id || 'base'" class="slide">
-
+                   <div v-for="(transformation, index) in charImages" :key="transformation.id || 'base'" class="slide">
                         <img :src="transformation.image" :alt="transformation.name" class="slider-img">
                     </div>
                 </div>
