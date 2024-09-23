@@ -141,6 +141,10 @@ body {
     background-color: #ffaa3bea;
 }
 
+p{
+    margin-bottom: 0;
+}
+
 .btn-back{
     display: flex;
     color: rgba(36, 104, 221, 0.847);
@@ -150,11 +154,13 @@ body {
 }
 
 .character-card {
+    display: flex;
+    flex-direction: column;
     background-color: #ffffff;
     border-radius: 10px;
     overflow: hidden;
     color: white;
-    max-width: 60%;
+    max-width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 20px auto;
 

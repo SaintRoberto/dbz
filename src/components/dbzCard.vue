@@ -4,11 +4,9 @@
             <img :src="image" class="card-img-top" alt="Image">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <!-- Sección del nombre y raza -->
                     <div>
                         <h5 class="card-title">{{ name }}</h5>
                     </div>
-                    <!-- Botón alineado al lado derecho -->
                 </div>
             </div>
         </div>
