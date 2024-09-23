@@ -1,11 +1,13 @@
 <template>
-
   <div class="container">
     <div class="logo">
       <img src="https://i.pinimg.com/originals/44/ae/09/44ae092a4e174756de8d950236b6e7e6.png" class="img-logo">
     </div>
     <div class="container-search">
-      <input v-model="searchChar" class="search" placeholder="Search character" />
+      <div class="input-group">
+        <input type="text" v-model="searchChar" class="form-control search" 
+        placeholder="Search character" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
     </div>
     <div v-if="dbzSearch && searchChar != ''" class="main-content">
       <li v-for="itemdbz in dbzSearch" :key="itemdbz.name" class="item">
@@ -36,8 +38,8 @@ const getDbzs = async () => {
     const result = await fetch('https://dragonball-api.com/api/characters');
     dbzs.value = await result.json();
   }
-  catch(error) {
-    console.error('no hay data' .error);
+  catch (error) {
+    console.error('no hay data'.error);
     dbzSearch.value = [];
 
   }
@@ -51,11 +53,11 @@ watch(searchChar, async (newValue) => {
       dbzSearch.value = response.data;
     } else {
       dbzSearch.value = [];
-    }    
+    }
     console.log(dbzSearch.value);
   }
-  catch(error) {
-    console.error('no hay data' . error);
+  catch (error) {
+    console.error('no hay data'.error);
   }
 })
 
@@ -75,16 +77,15 @@ onMounted(() => {
 }
 
 .container-search {
-  display: grid;
+  display: flex;
   justify-content: center;
   align-items: center;
   max-height: 10vh;
   width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
-.search {
-  width: 500px;
-}
 
 .logo {
   display: flex;

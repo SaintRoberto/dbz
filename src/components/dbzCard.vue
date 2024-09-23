@@ -53,7 +53,7 @@ defineProps({
     width: 100%;
     height: 300px;
     object-fit: contain;
-    
+
 }
 
 .card {
@@ -70,6 +70,10 @@ p {
     text-transform: uppercase;
     padding-left: 4px;
     ;
+}
+
+a {
+    text-decoration: none;
 }
 
 /* Estilo general de los botones */
