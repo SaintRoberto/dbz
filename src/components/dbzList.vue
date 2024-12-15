@@ -5,8 +5,8 @@
     </div>
     <div class="container-search">
       <div class="input-group">
-        <input type="text" v-model="searchChar" class="form-control search" 
-        placeholder="Search character" aria-label="Username" aria-describedby="basic-addon1">
+        <input type="text" v-model="searchChar" class="form-control search" placeholder="Search character"
+          aria-label="Username" aria-describedby="basic-addon1">
       </div>
     </div>
     <div v-if="dbzSearch && searchChar != ''" class="main-content">
@@ -27,7 +27,9 @@
       </div>
     </div>
   </div>
+ 
 </template>
+
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
@@ -136,40 +138,48 @@ onMounted(() => {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #ff5722; /* Color llamativo, similar a un estilo vibrante */
+  background-color: #ff5722;
+  /* Color llamativo, similar a un estilo vibrante */
   color: white;
   border: none;
-  border-radius: 30px; /* Bordes redondeados */
+  border-radius: 30px;
+  /* Bordes redondeados */
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
 }
 
 .pagination button:hover {
-  background-color: #e64a19; /* Color más oscuro al pasar el ratón */
-  transform: scale(1.1); /* Efecto de agrandamiento */
+  background-color: #e64a19;
+  /* Color más oscuro al pasar el ratón */
+  transform: scale(1.1);
+  /* Efecto de agrandamiento */
 }
 
 .pagination span {
   margin-top: 8px;
-  font-size: 15px;  
+  font-size: 15px;
   font-weight: bold;
-  color: black!important;
+  color: black !important;
 }
 
 
 .pagination button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
-  background-color: #dcdcdc; /* Color más suave para el botón deshabilitado */
+  background-color: #dcdcdc;
+  /* Color más suave para el botón deshabilitado */
 }
 
 @media (max-width: 900px) {
   .main-content {
     grid-template-columns: repeat(2, 2fr);
-    justify-items: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-  
+    justify-items: center;
+    /* Centra horizontalmente */
+    align-items: center;
+    /* Centra verticalmente */
+
   }
+
   .img-logo {
     max-width: 80%;
     height: 30%;
@@ -179,13 +189,17 @@ onMounted(() => {
 @media (max-width: 720px) {
   .main-content {
     grid-template-columns: 1fr;
-    justify-items: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
+    justify-items: center;
+    /* Centra horizontalmente */
+    align-items: center;
+    /* Centra verticalmente */
   }
+
   .img-logo {
     height: 30%;
     max-width: 90%;
 
   }
 }
+
 </style>
