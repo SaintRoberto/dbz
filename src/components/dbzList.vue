@@ -20,6 +20,11 @@
           <dbzCard :name="item.name" :idChar="item.id" :race="item.race" :image="item.image" />
         </li>
       </ul>
+      <div class="pagination">
+        <button @click="loadPage(currentPage - 1)" :disabled="currentPage === 1">Prev</button>
+        <span>{{ currentPage }}</span>
+        <button @click="loadPage(currentPage + 1)">Next</button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,18 +37,17 @@ import axios from 'axios';
 const dbzs = ref([]);
 const searchChar = ref('');
 const dbzSearch = ref();
+const currentPage = ref(1);
 
-const getDbzs = async () => {
+
+const getDbzs = async (page = 1) => {
   try {
-    const result = await fetch('https://dragonball-api.com/api/characters');
-    dbzs.value = await result.json();
+    const result = await axios.get(`https://dragonball-api.com/api/characters?page=${page}`);
+    dbzs.value = result.data;
   }
   catch (error) {
-    console.error('no hay data'.error);
-    dbzSearch.value = [];
-
+    console.error('Error fetching characters:', error);
   }
-
 }
 
 watch(searchChar, async (newValue) => {
@@ -62,8 +66,15 @@ watch(searchChar, async (newValue) => {
 })
 
 
+const loadPage = (page) => {
+  if (page > 0) {
+    currentPage.value = page;
+    getDbzs(page);
+  }
+};
+
 onMounted(() => {
-  getDbzs();
+  getDbzs(currentPage.value);
 });
 
 </script>
@@ -114,17 +125,67 @@ onMounted(() => {
   list-style-type: none;
 }
 
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #ff5722; /* Color llamativo, similar a un estilo vibrante */
+  color: white;
+  border: none;
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.pagination button:hover {
+  background-color: #e64a19; /* Color más oscuro al pasar el ratón */
+  transform: scale(1.1); /* Efecto de agrandamiento */
+}
+
+.pagination span {
+  margin-top: 8px;
+  font-size: 15px;  
+  font-weight: bold;
+  color: black!important;
+}
+
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: #dcdcdc; /* Color más suave para el botón deshabilitado */
+}
+
 @media (max-width: 900px) {
   .main-content {
     grid-template-columns: repeat(2, 2fr);
-    /* 2 columnas en pantallas medianas */
+    justify-items: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+  
+  }
+  .img-logo {
+    max-width: 80%;
+    height: 30%;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 720px) {
   .main-content {
-    grid-template-columns: repeat(1fr);
-    /* 2 columnas en pantallas medianas */
+    grid-template-columns: 1fr;
+    justify-items: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+  }
+  .img-logo {
+    height: 20%;
+    max-width: 40%;
+
   }
 }
 </style>

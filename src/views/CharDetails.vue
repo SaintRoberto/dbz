@@ -1,41 +1,48 @@
 <template>
-    <div class="character-card">
-        <div class="character-header">
-            <div class="slider-container">
-                <div class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
-                   <div v-for="(transformation, index) in charImages" :key="transformation.id || 'base'" class="slide">
-                        <img :src="transformation.image" :alt="transformation.name" class="slider-img">
+    <div v-if="loading" class="loader"></div>
+    <div class="card-main" v-else>
+        <div class="character-card">
+            <div class="character-header">
+                <div class="slider-container">
+                    <div class="slider" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
+                        <div v-for="(transformation, index) in charImages" :key="transformation.id || 'base'"
+                            class="slide">
+                            <img :src="transformation.image" :alt="transformation.name" class="slider-img">
+                        </div>
                     </div>
+                    <button class="slider-button prev" @click="prevSlide(charImages)">⬅️</button>
+                    <button class="slider-button next" @click="nextSlide(charImages)">➡️</button>
                 </div>
-                <button class="slider-button prev" @click="prevSlide(charImages)">⬅️</button>
-                <button class="slider-button next" @click="nextSlide(charImages)">➡️</button>
+            </div>
+            <div class="character-body">
+                <h5 class="character-name">{{ typedName }}</h5>
+                <p class="character-info">{{ typedRaceGender }}</p>
+                <p class="character-stat">
+                    {{ typeDescription }}
+                </p>
+                <p class="character-stat">
+                    <strong>Base KI:</strong> {{ typedBaseKi }}
+                </p>
+                <p class="character-stat">
+                    <strong>Total KI:</strong> {{ typedTotalKi }}
+                </p>
+                <p class="character-stat">
+                    <strong>Race:</strong> {{ typeRace }}
+                </p>
+                <p class="character-stat">
+                    <strong>Planet:</strong> {{ typedPlanet }}
+                </p>
+                <p class="character-affiliation">
+                    <strong>Affiliation:</strong> {{ typedAffiliation }}
+                </p>
             </div>
         </div>
-        <div class="character-body">
-            <h5 class="character-name">{{ typedName }}</h5>
-            <p class="character-info">{{ typedRaceGender }}</p>
-            <p class="character-stat">
-                {{ typeDescription }}
-            </p>
-            <p class="character-stat">
-                <strong>Base KI:</strong> {{ typedBaseKi }}
-            </p>
-            <p class="character-stat">
-                <strong>Total KI:</strong> {{ typedTotalKi }}
-            </p>
-            <p class="character-stat">
-                <strong>Race:</strong> {{ typeRace }}
-            </p>
-            <p class="character-stat">
-                <strong>Planet:</strong> {{ typedPlanet }}
-            </p>
-            <p class="character-affiliation">
-                <strong>Affiliation:</strong> {{ typedAffiliation }}
-            </p>
-        </div>
-    </div>
-    <RouterLink to="/" class="btn-back"><- back
+        <RouterLink to="/" class="btn-back">
+            <button class="bck-btn" @click="loadPage(currentPage + 1)">
+                Back
+            </button>
         </RouterLink>
+    </div>
 </template>
 
 <script setup>
@@ -99,7 +106,7 @@ const getCharData = async () => {
         });
 
         console.log(charImages);
-        
+
 
     } catch {
         console.log('Error fetching character data');
@@ -128,9 +135,14 @@ const prevSlide = (arrayTrans) => {
     }
 };
 
+const loading = ref(true);
 
 onMounted(() => {
-    getCharData();
+    setTimeout(() => {
+        getCharData();
+
+        loading.value = false;
+    }, 1000); // Ajusta el tiempo según la carga real
 })
 
 
@@ -141,11 +153,33 @@ body {
     background-color: #ffaa3bea;
 }
 
-p{
+p {
     margin-bottom: 0;
 }
 
-.btn-back{
+.bck-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ff5722;
+    /* Color llamativo, similar a un estilo vibrante */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    /* Bordes redondeados */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+
+}
+
+.bck-btn:hover {
+    background-color: #e64a19;
+    /* Color más oscuro al pasar el ratón */
+    transform: scale(1.1);
+    /* Efecto de agrandamiento */
+}
+
+.btn-back {
     display: flex;
     color: rgba(36, 104, 221, 0.847);
     justify-content: space-around;
@@ -197,7 +231,7 @@ p{
     /* Asegura que la imagen se recorte para ajustarse al tamaño sin distorsionarse */
     display: block;
     margin: 0 auto;
-    
+
 }
 
 .slider-button {
@@ -208,7 +242,7 @@ p{
     color: white;
     border: none;
     cursor: pointer;
-   
+
     font-size: 1.5rem;
 }
 
@@ -276,4 +310,27 @@ p{
     color: #ffeb3b;
 }
 
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #ff5722;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
 </style>
