@@ -183,8 +183,8 @@ onMounted(() => {
     align-items: center; /* Centra verticalmente */
   }
   .img-logo {
-    height: 20%;
-    max-width: 40%;
+    height: 30%;
+    max-width: 90%;
 
   }
 }
